@@ -1,4 +1,24 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
+
+const Statistics = ( {
+  good,
+  neutral,
+  bad,
+  all
+} ) => {  
+  return (
+    <>
+      <h3>statistics</h3>
+			<p>good {good}</p>
+			<p>neutral {neutral}</p>
+			<p>bad {bad}</p>
+			<p>all {all}</p>
+			<p>average {all / 3}</p>
+			<p>positive {((good + neutral) / all) * 100}%</p>
+		</>
+	)
+}
 
 function App() {
   const [good, setGood] = useState(0)
@@ -30,12 +50,12 @@ function App() {
 				<button onClick={handleBad}>bad</button>
 			</div>
 
-			<p>good {good}</p>
-			<p>neutral {neutral}</p>
-			<p>bad {bad}</p>
-			<p>all {all}</p>
-			<p>average {all / 3}</p>
-			<p>positive {((good + neutral) / all) * 100}%</p>
+      <Statistics
+        good={ good }
+        neutral={ neutral }
+        bad={ bad }
+        all={all}
+      />
 		</>
 	)
 }
