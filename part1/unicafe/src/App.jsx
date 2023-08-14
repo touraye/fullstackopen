@@ -6,10 +6,11 @@ const Statistics = ( {
   neutral,
   bad,
   all
-} ) => {  
+} ) => { 
+  
+  if(all < 1) return <p>No feedback given</p>
   return (
-    <>
-      <h3>statistics</h3>
+    <>      
 			<p>good {good}</p>
 			<p>neutral {neutral}</p>
 			<p>bad {bad}</p>
@@ -50,11 +51,11 @@ function App() {
 				<button onClick={handleBad}>bad</button>
 			</div>
 
+			<h3>statistics</h3>
       <Statistics
         good={ good }
         neutral={ neutral }
-        bad={ bad }
-        all={all}
+        bad={ bad } all={ all }
       />
 		</>
 	)
