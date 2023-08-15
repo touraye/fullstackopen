@@ -24,11 +24,26 @@ const Content = ( { parts } ) => {
 	)
 }
 
+const Footer = ( { parts } ) => {	
+	return (
+		<>
+			<h4>
+				total of {' '}
+				{parts
+					.map((course) => course.exercises)
+					.reduce( ( cur, acc ) => cur + acc ) }
+				{' '} exercises
+			</h4>
+		</>
+	)
+}
+
 const Course = ( { course } ) => {
 	return (
 		<>
 			<Header courseName={ course.name } />
-			<Content parts={course.parts} />
+			<Content parts={ course.parts } />
+			<Footer parts={course.parts} />
 		</>
 	)
 }
@@ -52,6 +67,11 @@ function App() {
 				name: 'State of a component',
 				exercises: 14,
 				id: 3,
+			},
+			{
+				name: 'Redux',
+				exercises: 11,
+				id: 4,
 			},
 		],
  }
