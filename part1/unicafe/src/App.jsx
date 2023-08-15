@@ -10,9 +10,20 @@ const Button = ( { text, handleClick } ) => (
 
 
 const StatisticLine = ({ text, value, sign }) => (
-	<p>
-		{text} {value} {sign}
-	</p>
+	// <p>
+	// 	{text} {value} {sign}
+	// </p>
+	<>
+		<table>
+			<tbody>
+				<tr>
+					<td>
+						{text} {value} {sign}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</>
 )
 
 const Statistics = ( {
