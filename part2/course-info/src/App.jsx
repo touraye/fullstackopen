@@ -1,47 +1,4 @@
-/* eslint-disable react/prop-types */
-const Header = ( { courseName } ) => (	
-	<>
-		<h3>{courseName}</h3>
-	</>
-)
-
-const Part = ( { parts } ) => (
-	<>
-		{
-			parts?.map( ( part, index ) => (
-				<>
-					<p key={ index }>{ part.name } { part.exercises }</p>
-				</>
-			))
-		}
-
-		<Footer part={parts} />
-	</>
-)
-
-const Content = ({ courses }) => <Part parts={courses.parts} />	
-
-
-const Footer = ( { part } ) => (
-		<>
-			<h4>
-				total of {' '}
-				{part
-					.map((part) => part.exercises)
-					.reduce( ( cur, acc ) => cur + acc ) }
-				{' '} exercises
-			</h4>
-		</>
-)
-
-const Course = ( { course } ) => {	
-	return (
-		<>			
-			<Header courseName={course.name} />
-			<Content courses={course} />			
-		</>
-	)
-}
+import Course from "./component/Course"
 
 function App() { 
  const courses = [
