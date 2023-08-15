@@ -1,4 +1,7 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react'
+
+const Button = ( { text, handleClick } ) => <button onClick={handleClick}>{ text }</button>
 
 
 function App() {
@@ -14,14 +17,33 @@ function App() {
 	]
 
   const [ selected, setSelected ] = useState( 0 )
+  const [ votes, setVotes ] = useState( new Array( anecdotes.length ).fill( 0 ) )
   
-  const generateNextAnecdote = (anecdotes) =>
-		setSelected(~~(Math.random() * anecdotes.length))
+  const generateNext = () =>
+		setSelected(~~(Math.random() * anecdotes.length))  
+  
+  const addVote = () => {    
+    let copy = [ ...votes ]
+    copy[ selected ] += 1 
+    setVotes(copy)
+  }
   
   return (
 		<>
 			<p>{anecdotes[selected]}</p>
-			<button onClick={()=>generateNextAnecdote(anecdotes)}>generate next</button>
+      <p>has { votes[ selected ] } votes</p>
+      
+			<div>
+        <Button
+          text='vote'
+          handleClick={ addVote }
+        />
+        { ' ' }
+				<Button
+					text='generate next'
+					handleClick={ generateNext}
+				/>				
+			</div>
 		</>
 	)
 }
