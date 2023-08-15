@@ -16,6 +16,12 @@ function App() {
       name: newName
     }
 
+    const personExist = persons.find( person => person.name.toLowerCase() === content.name.toLowerCase() )
+   
+    if ( personExist ) {
+      return alert(`${content.name} is already added to phonebook`)
+    }
+
     setPersons(persons.concat(content))
     
   }
@@ -35,7 +41,6 @@ function App() {
 			</form>
       <h2>Numbers</h2>
       {
-
         persons?.map( ( person, index ) => (
           <p key={ index }>{ person.name }</p>
         ))
