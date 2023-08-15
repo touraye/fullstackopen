@@ -1,6 +1,20 @@
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
 
+const Button = ( { text, handleClick } ) => (
+  <button
+    onClick={ handleClick }>
+    { text }
+  </button>
+)
+
+
+const StatisticLine = ({ text, value, sign }) => (
+	<p>
+		{text} {value} {sign}
+	</p>
+)
+
 const Statistics = ( {
   good,
   neutral,
@@ -10,13 +24,13 @@ const Statistics = ( {
   
   if(all < 1) return <p>No feedback given</p>
   return (
-    <>      
-			<p>good {good}</p>
-			<p>neutral {neutral}</p>
-			<p>bad {bad}</p>
-			<p>all {all}</p>
-			<p>average {all / 3}</p>
-			<p>positive {((good + neutral) / all) * 100}%</p>
+		<>			
+			<StatisticLine text='good' value={good} />
+			<StatisticLine text='neutral' value={neutral} />
+			<StatisticLine text='bad' value={bad} />
+			<StatisticLine text='all' value={all} />
+			<StatisticLine text='average' value={all / 3} />
+			<StatisticLine text='positive' value={((good + neutral) / all) * 100} sign="%" />		
 		</>
 	)
 }
@@ -44,18 +58,30 @@ function App() {
 
   return (
 		<>
-			<h2>give feedback</h2>
-			<div>
-				<button onClick={handleGood}>good</button>
-				<button onClick={handleNeutral}>neutral</button>
-				<button onClick={handleBad}>bad</button>
+      <h2>give feedback</h2>
+      
+			<div>			
+        <Button
+          text='good'
+          handleClick={ handleGood }
+        />
+        <Button
+          text='neutral'
+          handleClick={ handleNeutral }
+        />
+        <Button
+          text='bad'
+          handleClick={ handleBad }
+        />
 			</div>
 
-			<h3>statistics</h3>
+      <h3>statistics</h3>
+      
       <Statistics
         good={ good }
         neutral={ neutral }
-        bad={ bad } all={ all }
+        bad={ bad }
+        all={ all }
       />
 		</>
 	)
