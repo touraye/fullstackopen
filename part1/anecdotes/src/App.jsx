@@ -27,22 +27,25 @@ function App() {
     copy[ selected ] += 1 
     setVotes(copy)
   }
+
+  const anecdoteWithMostLike = () => {
+    return votes.indexOf(Math.max(...votes))
+  }
+
   
   return (
 		<>
 			<p>{anecdotes[selected]}</p>
-      <p>has { votes[ selected ] } votes</p>
-      
+			<p>has {votes[selected]} votes</p>
+
 			<div>
-        <Button
-          text='vote'
-          handleClick={ addVote }
-        />
-        { ' ' }
-				<Button
-					text='generate next'
-					handleClick={ generateNext}
-				/>				
+				<Button text='vote' handleClick={addVote} />{' '}
+				<Button text='generate next' handleClick={generateNext} />
+			</div>
+
+			<div>
+				<p>{anecdotes[ anecdoteWithMostLike() ]}</p>
+				<p>has {votes[anecdoteWithMostLike()]} votes</p>
 			</div>
 		</>
 	)
