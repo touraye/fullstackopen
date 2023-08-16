@@ -2,9 +2,15 @@ import { useState } from 'react'
 
 
 function App() {
-	const [persons, setPersons] = useState([{ name: 'Arto Hellas', number: '022 340 8965' }])
+  const [persons, setPersons] = useState([
+		{ name: 'Arto Hellas', number: '040-123456' },
+		{ name: 'Ada Lovelace', number: '39-44-5323523' },
+		{ name: 'Dan Abramov', number: '12-43-234345' },
+		{ name: 'Mary Poppendieck', number: '39-23-6423122' },
+	])
   const [ newName, setNewName ] = useState( '' )
-  const [newNumber, setNewNumber] = useState('')
+  const [ newNumber, setNewNumber ] = useState( '' )
+  const [ filtered, setFiltered ] = useState( '' )
 
   const handleNameChange = (e) => {
     setNewName(e.target.value)
@@ -32,9 +38,20 @@ function App() {
     
   }
 
+  const handleFilter = (e) => setFiltered(e.target.value)
+
+  const personLookUp = persons.filter( person => person.name.toLowerCase().indexOf( filtered.toLowerCase() ) !== - 1 )    
+
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<div>
+				<input
+					type='text'
+					onChange={handleFilter}
+					placeholder='search person'
+				/>
+			</div>
 			<form onSubmit={handleSubmit}>
 				<div>
 					name:{' '}
@@ -42,15 +59,20 @@ function App() {
 				</div>
 				<div>
 					number:{' '}
-					<input onChange={handleNumberChange} placeholder='Enter person number' />
+					<input
+						onChange={handleNumberChange}
+						placeholder='Enter person number'
+					/>
 				</div>
 				<div>
 					<button type='submit'>add</button>
 				</div>
 			</form>
 			<h2>Numbers</h2>
-			{persons?.map((person, index) => (
-        <p key={ index }>{ person.name } { person.number }</p>
+			{personLookUp?.map((person, index) => (
+				<p key={index}>
+					{person.name} {person.number}
+				</p>
 			))}
 		</div>
 	)
