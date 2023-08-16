@@ -2,18 +2,24 @@ import { useState } from 'react'
 
 
 function App() {
-	const [persons, setPersons] = useState([{ name: 'Arto Hellas' }])
+	const [persons, setPersons] = useState([{ name: 'Arto Hellas', number: '022 340 8965' }])
   const [ newName, setNewName ] = useState( '' )
+  const [newNumber, setNewNumber] = useState('')
 
-  const handleChange = (e) => {
+  const handleNameChange = (e) => {
     setNewName(e.target.value)
   }
+
+  const handleNumberChange = (e) => {
+		setNewNumber(e.target.value)
+	}
   
   const handleSubmit = ( e ) => {
     e.preventDefault()
 
     const content = {
-      name: newName
+      name: newName,
+      number: newNumber
     }
 
     const personExist = persons.find( person => person.name.toLowerCase() === content.name.toLowerCase() )
@@ -31,20 +37,21 @@ function App() {
 			<h2>Phonebook</h2>
 			<form onSubmit={handleSubmit}>
 				<div>
-					name: <input onChange={handleChange} placeholder='Enter person name' />
+					name:{' '}
+					<input onChange={handleNameChange} placeholder='Enter person name' />
 				</div>
 				<div>
-					<button type='submit'>
-						add
-					</button>
+					number:{' '}
+					<input onChange={handleNumberChange} placeholder='Enter person number' />
+				</div>
+				<div>
+					<button type='submit'>add</button>
 				</div>
 			</form>
-      <h2>Numbers</h2>
-      {
-        persons?.map( ( person, index ) => (
-          <p key={ index }>{ person.name }</p>
-        ))
-      }
+			<h2>Numbers</h2>
+			{persons?.map((person, index) => (
+        <p key={ index }>{ person.name } { person.number }</p>
+			))}
 		</div>
 	)
 }
