@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import Persons from './component/Persons'
+import PersonForm from './component/PersonForm'
+import Filtering from './component/Filter'
 
 
 function App() {
@@ -45,35 +48,18 @@ function App() {
 	return (
 		<div>
 			<h2>Phonebook</h2>
-			<div>
-				<input
-					type='text'
-					onChange={handleFilter}
-					placeholder='search person'
-				/>
-			</div>
-			<form onSubmit={handleSubmit}>
-				<div>
-					name:{' '}
-					<input onChange={handleNameChange} placeholder='Enter person name' />
-				</div>
-				<div>
-					number:{' '}
-					<input
-						onChange={handleNumberChange}
-						placeholder='Enter person number'
-					/>
-				</div>
-				<div>
-					<button type='submit'>add</button>
-				</div>
-			</form>
-			<h2>Numbers</h2>
-			{personLookUp?.map((person, index) => (
-				<p key={index}>
-					{person.name} {person.number}
-				</p>
-			))}
+			
+      <Filtering handleFilter={handleFilter} />
+			
+			<PersonForm
+				handleSubmit={handleSubmit}
+				handleNameChange={handleNameChange}
+				handleNumberChange={handleNumberChange}
+      />
+      
+      <h2>Numbers</h2>
+      
+			<Persons persons={personLookUp} />
 		</div>
 	)
 }
