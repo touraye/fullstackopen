@@ -29,26 +29,51 @@ function App() {
   const handleSubmit = ( e ) => {
     e.preventDefault()
 
-    const content = {
-      name: newName,
-      number: newNumber
-    }
-
-    const personExist = persons.find( person => person.name.toLowerCase() === content.name.toLowerCase() )
+    const personExist = persons.find( person => person.name.toLowerCase() === newName.toLowerCase() )
    
-    if ( personExist ) {
-      return alert(`${content.name} is already added to phonebook`)
-    }
+    if (personExist) {
+      updateNumber(personExist)
+    } else {
 
-    services
-      .addPerson( content )
-      .then( response => {
-      setPersons( persons.concat( response.data ) )
-      setNewName( '' )
-      setNewNumber('')
-    })
+       const content = {
+					name: newName,
+					number: newNumber,
+				}
+      
+        services
+          .addPerson( content )
+          .then( response => {
+          setPersons( persons.concat( response.data ) )
+          setNewName( '' )
+          setNewNumber('')
+        })
+    }
       
   }
+
+  const updateNumber = ( personExist ) => {
+    if (window.confirm(
+				`${personExist.name} is already added to phonebook. Replace the old number with new number?`
+			)
+    ) {    
+      
+      const newObject = {
+				...personExist,
+				number: newNumber,
+			}
+      
+      services
+        .updatePerson( personExist.id, newObject )
+        .then( ( response ) => {          
+				setPersons(
+					persons.map((person) =>
+						person.id !== personExist.id ? person : response.data
+					)
+				)
+			})
+		}
+  }
+
 
   const handleDelete = ( deletePerson ) => {
     if ( window.confirm( `Delete ${deletePerson.name}?` ) ) {
