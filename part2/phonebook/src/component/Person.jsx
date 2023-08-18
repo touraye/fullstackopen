@@ -1,12 +1,18 @@
 /* eslint-disable react/prop-types */
-const Person = ({ persons }) => (
-	<>
-		{persons?.map((person, index) => (
-			<p key={index}>
-				{person.name} {person.number}
-			</p>
-		))}
-	</>
-)
+const Person = ( { person, onDelete } ) => {	
+	return (
+		<li>
+			<span>
+				{ person.name } { person.number }
+			</span>
+			{ ' ' }
+			<span>
+				<button onClick={onDelete}>
+					delete
+				</button>
+			</span>
+		</li>
+	)
+}
 
 export default Person

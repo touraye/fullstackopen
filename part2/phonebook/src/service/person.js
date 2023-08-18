@@ -11,9 +11,14 @@ const addPerson = ( object ) => {
     return axios.post(baseUrl, object)
 }
 
+const deletePerson = ( id ) => {
+    return axios.delete(`${baseUrl}/${id}`)
+}
+
 const services = {
     getAll,
-    addPerson
+    addPerson,
+    deletePerson
 }
 
 export default services

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import Persons from './component/Persons'
 import PersonForm from './component/PersonForm'
@@ -49,25 +50,40 @@ function App() {
       
   }
 
+  const handleDelete = ( deletePerson ) => {
+    if ( window.confirm( `Delete ${deletePerson.name}?` ) ) {
+      const newPersons = persons.filter(person => person.id !== deletePerson.id)
+      
+      services
+        .deletePerson( deletePerson.id )
+        .then( ( response ) => {
+			setPersons(newPersons)
+		})
+    }
+  }
+
   const handleFilter = (e) => setFiltered(e.target.value)
 
-  const personLookUp = persons.filter( person => person.name.toLowerCase().indexOf( filtered.toLowerCase() ) !== - 1 )    
+  const filteredPerson = persons.filter( person => person.name.toLowerCase().indexOf( filtered.toLowerCase() ) !== - 1 )    
 
 	return (
 		<div>
 			<h2>Phonebook</h2>
-			
-      <Filtering handleFilter={handleFilter} />
-			
+
+			<Filtering handleFilter={handleFilter} />
+
 			<PersonForm
 				handleSubmit={handleSubmit}
 				handleNameChange={handleNameChange}
 				handleNumberChange={handleNumberChange}
+			/>
+
+			<h2>Numbers</h2>
+
+      <Persons
+        filteredPerson={ filteredPerson }
+        onDelete={ handleDelete }
       />
-      
-      <h2>Numbers</h2>
-      
-			<Persons persons={personLookUp} />
 		</div>
 	)
 }
