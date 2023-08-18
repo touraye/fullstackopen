@@ -42,7 +42,11 @@ function App() {
       return alert(`${content.name} is already added to phonebook`)
     }
 
-    setPersons(persons.concat(content))
+    axios
+      .post( 'http://localhost:3001/persons', content )
+      .then( ( response ) => {
+				setPersons(persons.concat(response.data))
+			})
     
   }
 
