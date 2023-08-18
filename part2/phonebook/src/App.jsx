@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Persons from './component/Persons'
 import PersonForm from './component/PersonForm'
 import Filtering from './component/Filter'
-import axios from 'axios'
+import services from './service/person'
 
 
 function App() {
@@ -12,12 +12,9 @@ function App() {
   const [ filtered, setFiltered ] = useState( '' )
 
   useEffect( () => {
-    axios
-      .get( 'http://localhost:3001/persons' )
-      .then( response => {
-        const data = response.data
-        setPersons(data);
-    })
+    services
+      .getAll()
+      .then( ( response ) => setPersons( response.data ) )    
   }, [])
 
   const handleNameChange = (e) => {
@@ -42,12 +39,14 @@ function App() {
       return alert(`${content.name} is already added to phonebook`)
     }
 
-    axios
-      .post( 'http://localhost:3001/persons', content )
-      .then( ( response ) => {
-				setPersons(persons.concat(response.data))
-			})
-    
+    services
+      .addPerson( content )
+      .then( response => {
+      setPersons( persons.concat( response.data ) )
+      setNewName( '' )
+      setNewNumber('')
+    })
+      
   }
 
   const handleFilter = (e) => setFiltered(e.target.value)
