@@ -12,7 +12,8 @@ function App() {
   const [ newName, setNewName ] = useState( '' )
   const [ newNumber, setNewNumber ] = useState( '' )
   const [ filtered, setFiltered ] = useState( '' )
-  const [notifyMessage, setNotifyMessage] = useState('');
+  const [ notifyMessage, setNotifyMessage ] = useState( '' );
+  const [ messageType, setMessageType ] = useState( null )  
 
   useEffect( () => {
     services
@@ -51,10 +52,12 @@ function App() {
       setNewName( '' )      
       setNewNumber( '' )
       
+      setMessageType('success')
       setNotifyMessage( `Added ${newName}` )
       
       setTimeout(() => {
-				setNotifyMessage(null)
+        setMessageType(null)
+        setNotifyMessage( null )
 			}, 5000)
     }
       
@@ -92,7 +95,18 @@ function App() {
         .deletePerson( deletePerson.id )
         .then( ( response ) => {
 			setPersons(newPersons)
-		})
+        } ).catch( error => {         
+          setMessageType('error')
+          setNotifyMessage(
+						`${deletePerson.name} was already deleted from the server`
+					)
+          setPersons( persons.filter( person => person.id !== deletePerson.id ) )
+          
+          setTimeout( () => {
+            setMessageType(null)
+            setNotifyMessage('')
+          }, 5000)
+    })
     }
   }
 
@@ -104,7 +118,10 @@ function App() {
 		<div>
       <h2>Phonebook</h2>
       
-      <Notification message={notifyMessage} />
+      <Notification
+        message={ notifyMessage }
+        messageTye={messageType}
+      />
 
 			<Filtering handleFilter={handleFilter} />
 
