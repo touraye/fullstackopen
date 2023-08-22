@@ -1,6 +1,8 @@
 const express = require( 'express' )
 const app = express()
 
+app.use(express.json())
+
 const persons = [
 	{
 		id: 1,
@@ -62,6 +64,16 @@ app.delete( '/api/persons/:id', ( request, response ) => {
     } else {
         response.status( 404 ).json( { error: `No person found with a id of ${id}` } )
     }
+} )
+
+app.post( '/api/persons', ( request, response ) => {
+    const body = request.body
+    
+    const id = persons.length + 1
+    const newPersons = persons.concat({ id: id, ...body })
+    response.status( 201 ).json( {
+        data: newPersons
+    })
 })
 
 const PORT = 3001
