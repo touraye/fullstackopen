@@ -41,11 +41,26 @@ app.get( '/api/persons/:id', ( request, response ) => {
     const id = request.params.id     
     
     const query = persons.find( person => person.id == id )
-    
+
     if ( query ) {
         response.status(201).json({data: query})        
     } else {
         response.status(404).json({error: `No person found with a id of ${id}`})
+    }
+} )
+
+app.delete( '/api/persons/:id', ( request, response ) => {
+    const id = request.params.id
+
+    const query = persons.find( ( person ) => person.id == id )
+    
+    if ( query ) {
+        const filteredPerson = persons.filter( person => person.id.toString() !== id )
+        response.status( 201 ).json( {
+            data: filteredPerson
+        })
+    } else {
+        response.status( 404 ).json( { error: `No person found with a id of ${id}` } )
     }
 })
 
