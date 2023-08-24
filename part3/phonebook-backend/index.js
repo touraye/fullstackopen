@@ -1,8 +1,10 @@
 const express = require( 'express' )
 const morgan = require('morgan')
 const app = express()
+const cors = require('cors')
 
 app.use( express.json() )
+app.use(cors())
 app.use(
 	morgan(':method :url :status :res[content-length] - :response-time ms :body')
 )
@@ -78,11 +80,11 @@ app.delete( '/api/persons/:id', ( request, response ) => {
 } )
 
 app.post( '/api/persons', ( request, response ) => {
-    const body = request.body    
+    const {name, number} = request.body    
 
-    if ( body.name !== undefined && body.number !== undefined) {
+    if ( name !== undefined && number !== undefined) {
 
-        const personExist = persons.find( person => person.name.toLowerCase() === body.name.toLowerCase() )
+        const personExist = persons.find( person => person.name.toLowerCase() === name.toLowerCase() )
         
         if ( personExist ) {
             return response.status( 400 ).json( {
@@ -91,9 +93,14 @@ app.post( '/api/persons', ( request, response ) => {
         }
         
         const id = persons.length + 1
-        const newPersons = persons.concat({ id: id, ...body })
+        const newObject = {
+            id,
+            name,
+            number
+        }
+        persons.concat(newObject)
         response.status( 201 ).json( {
-            data: newPersons
+            data: newObject
         })
         
     } else {
