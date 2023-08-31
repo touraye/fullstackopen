@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import Weather from './component/Weather'
 
 const Country = ({ country }) => (
 	<div>
@@ -66,6 +67,7 @@ function App() {
 					? filteredCountries.map((country, index) => (
 							<li key={index}>
 								<Country country={country} />
+                <Weather country={country} />
 							</li>
 					))
 					: filteredCountries.length < 10
