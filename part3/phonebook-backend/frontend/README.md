@@ -1,0 +1,2 @@
+# Tasks 2.6.-2.10.
+The program to be started in the next task will be developed further in the next few tasks. In this and other assignment series during the course, restoring the final version of the program is sufficient, of course you can make a commit of the situation after each assignment if you wish, but it is not necessary.
