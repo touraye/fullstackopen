@@ -74,13 +74,13 @@ describe( 'favorite blog', () => {
 				id: '64f709954b7256df4a522004',
 			},
 			{
-				author: 'JS Mastery',
+				author: 'A Kamariana',
 				url: 'jsmastery.com/blog/server-client-rendering',
 				likes: 15,
 				id: '64f70a264b7256df4a522007',
 			},
 			{
-				author: 'JS Mastery',
+				author: 'A Kamariana',
 				url: 'jsmastery.com/blog/server-client-rendering',
 				likes: 40,
 				id: '64f71c43759800ce692902e9',
@@ -89,11 +89,47 @@ describe( 'favorite blog', () => {
 
 		const result = listHelper.favoriteBlog( blogs )
 		expect(result).toEqual({
-			author: 'JS Mastery',
+			author: 'A Kamariana',
 			url: 'jsmastery.com/blog/server-client-rendering',
 			likes: 40,
 			id: '64f71c43759800ce692902e9',
 		})
 	})
- })
+} )
+ 
+describe( 'most likes', () => {
+	test( 'author with most blog is returned ', () => {
+		
+		const blogs = [
+			{
+				author: 'JS Mastery',
+				url: 'jsmastery.com/blog/nestjs-app-router',
+				likes: 10,
+				id: '64f709954b7256df4a522004',
+			},
+			{
+				author: 'A Kamariana',
+				url: 'jsmastery.com/blog/server-client-rendering',
+				likes: 15,
+				id: '64f70a264b7256df4a522007',
+			},
+			{
+				author: 'A Kamariana',
+				url: 'jsmastery.com/blog/server-client-rendering',
+				likes: 40,
+				id: '64f71c43759800ce692902e9',
+			},
+		]
+	
+		const result = listHelper.mostBlogs( blogs )
+		expect( result ).toEqual( {
+			author: 'A Kamariana',
+			blog: 2
+		})
+	})
+	
+} );
+
+
+
 
