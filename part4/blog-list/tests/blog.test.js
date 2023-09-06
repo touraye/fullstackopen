@@ -130,6 +130,36 @@ describe( 'most likes', () => {
 	
 } );
 
+describe('top blogger', () => {
+	test('author with most like is returned ', () => {
+		const blogs = [
+			{
+				author: 'JS Mastery',
+				url: 'jsmastery.com/blog/nestjs-app-router',
+				likes: 10,
+				id: '64f709954b7256df4a522004',
+			},
+			{
+				author: 'A Kamariana',
+				url: 'jsmastery.com/blog/server-client-rendering',
+				likes: 15,
+				id: '64f70a264b7256df4a522007',
+			},
+			{
+				author: 'A Kamariana',
+				url: 'jsmastery.com/blog/server-client-rendering',
+				likes: 40,
+				id: '64f71c43759800ce692902e9',
+			},
+		]
+
+		const result = listHelper.mostLikes(blogs)
+		expect(result).toEqual({
+			author: 'A Kamariana',
+			likes: 55,
+		})
+	})
+})
 
 
 
