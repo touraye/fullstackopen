@@ -4,14 +4,15 @@
   "description": "Full-stack open bloglist app",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
-    "test": "jest --verbose"
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "test": "NODE_ENV=test jest --verbose --runInBand"
   },
   "author": "Ebrima Touray",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mongoose": "^7.5.0",
@@ -19,6 +20,11 @@
   },
   "devDependencies": {
     "jest": "^29.6.4",
-    "nodemon": "^3.0.1"
-  }
+    "nodemon": "^3.0.1",
+    "supertest": "^6.3.3"
+  },
+  "jest": {
+   "testEnvironment": "node",
+   "globalTeardown": "./tests/teardown.js"
+ }
 }
