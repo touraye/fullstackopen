@@ -41,20 +41,36 @@ test('blogs are returned as json', async () => {
 }, 100000 )
 
 test('all blogs are return', async () => {
-    const response = await api.get( '/api/blogs' )
-    expect(response.body).toHaveLength(initialBlogs.length)
-} )
+	const response = await api.get('/api/blogs')
+	expect(response.body).toHaveLength(initialBlogs.length)
+}, 100000)
 
 
-test('id field is defined', async () => {	
-	const response = await api.get( '/api/blogs' )
-	
-		response.body.forEach((blog) => {
-			expect(blog.id).toBeDefined()
-		})	
-})
+test('id field is defined', async () => {
+	const response = await api.get('/api/blogs')
 
+	response.body.forEach((blog) => {
+		expect(blog.id).toBeDefined()
+	})
+}, 100000)
 
+test('blog is save with http request', async () => {
+	const blogsBeforeSaving = await api.get('/api/blogs')
+
+	const newBlog = new Blog({
+		title: 'Saving new blog during test',
+		author: 'JS Mastery',
+		url: 'jsmastery.com/blog/server-client-rendering',
+		likes: '2',
+	})
+
+	await newBlog.save()
+
+	const blogsAfterSaving = await api.get('/api/blogs')
+	expect(blogsAfterSaving.body.length).toBeGreaterThan(
+		blogsBeforeSaving.body.length
+	)
+}, 100000)
 
 
 afterAll(async () => {
