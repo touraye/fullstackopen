@@ -7,16 +7,19 @@ const Blog = require( '../models/blog' )
 
 const initialBlogs = [
 	{
+		title: "Nextjs Ebook",
 		author: 'JS Mastery',
 		url: 'jsmastery.com/blog/nestjs-app-router',
 		likes: 10,
 	},
 	{
+		title: "React roadmap 2023",
 		author: 'JS Mastery',
 		url: 'jsmastery.com/blog/server-client-rendering',
 		likes: 5,
 	},
 	{
+		title: "Tailwind css Ebook",
 		author: 'JS Mastery',
 		url: 'jsmastery.com/blog/server-client-rendering',
 		likes: 5,
@@ -86,6 +89,16 @@ test( 'blog without like value is assigned with 0 like ', async () => {
 	
 	const response = await api.get('/api/blogs')		
 	expect( response.body[ response.body.length - 1 ].likes ).toBe(0)	
+}, 100000)
+
+test('creating new blog with a title return a bad request', async () => {
+	const newBlog = {
+		author: 'JS Mastery',
+		url: 'jsmastery.com/blog/server-client-rendering',
+		likes: 2,
+	}
+
+	await api.post( '/api/blogs' ).send( newBlog ).expect( 400 )	
 }, 100000)
 
 
