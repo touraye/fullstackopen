@@ -72,6 +72,22 @@ test('blog is save with http request', async () => {
 	)
 }, 100000)
 
+test( 'blog without like value is assigned with 0 like ', async () => {
+	const newBlog = {
+		title: 'Blog with no like property',
+		author: 'JS Mastery',
+		url: 'jsmastery.com/blog/server-client-rendering',	
+	}
+
+	await api
+		.post( '/api/blogs' )
+		.send( newBlog )
+		.expect( 201 )
+	
+	const response = await api.get('/api/blogs')		
+	expect( response.body[ response.body.length - 1 ].likes ).toBe(0)	
+}, 100000)
+
 
 afterAll(async () => {
 	await mongoose.connection.close()
