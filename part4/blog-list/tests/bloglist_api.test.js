@@ -4,6 +4,7 @@ const app = require('../app')
 
 const api = supertest( app )
 const Blog = require( '../models/blog' )
+const blog = require( '../models/blog' )
 
 const initialBlogs = [
 	{
@@ -100,6 +101,27 @@ test('creating new blog with a title return a bad request', async () => {
 
 	await api.post( '/api/blogs' ).send( newBlog ).expect( 400 )	
 }, 100000)
+
+
+describe('delete one blog', () => {  
+	test('succeeds with status code 204 if id is valid', async () => {
+		const blogs = await api.get( '/api/blogs' )	
+		const blogToBeDelete = blogs.body[0]		
+		
+		await api.delete(`/api/blogs/${blogToBeDelete.id}`).expect(204)
+		
+		const blogsAfterDeletion = await api.get( '/api/blogs' )
+		
+		expect( blogsAfterDeletion.body ).toHaveLength(
+			blogs.body.length - 1
+		)
+	
+		const titles = blogsAfterDeletion.body.map( blog => blog.title )
+		
+		expect(titles).not.toContain(blogToBeDelete.title)
+	}, 100000)
+})
+
 
 
 afterAll(async () => {
