@@ -122,6 +122,27 @@ describe('delete one blog', () => {
 	}, 100000)
 })
 
+describe('updating one blog', () => {
+  test('blog likes can be updated', async () => {
+	  const blogs = await api.get( '/api/blogs' )
+	  const blogToBeUpdated = blogs.body[blogs.body.length - 1]
+	  console.log('blogToBeUpdated', blogToBeUpdated)
+	  
+	  const updateBlog = {
+		  likes: 11
+	  }
+
+	   const updatedBlog = await api
+		   .put( `/api/blogs/${blogToBeUpdated.id}` )
+		   .send(updateBlog)
+			.expect(202)	  	  
+	  
+		console.log('updatedBlog', updatedBlog.body)
+	  
+	//   expect(updatedBlog.body.likes).toBeGreaterThan(blogToBeUpdated.likes)
+  })
+  
+})
 
 
 afterAll(async () => {
