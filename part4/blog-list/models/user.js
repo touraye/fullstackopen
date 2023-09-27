@@ -6,7 +6,7 @@ const userSchema = mongoose.Schema( {
         required: true
     },
     name:  String,
-    password: String, 
+    passwordHash: String, 
     blogs: [ {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Blog'
