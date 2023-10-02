@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Notification from './components/Notification'
 
 const App = () => {
   const [ blogs, setBlogs ] = useState( [] )
@@ -11,6 +12,8 @@ const App = () => {
   const [ title, setTitle ] = useState( '' )
   const [ author, setAuthor ] = useState( '' )
   const [ url, setUrl ] = useState( '' )
+  const [ message, setMessage ] = useState( null )  
+  const [ type, setType ] = useState( null )  
   
 
   useEffect(() => {
@@ -40,10 +43,9 @@ const App = () => {
       
       window.localStorage.setItem( 'loggedUser', JSON.stringify( user ) )
       blogService.setToken( user.token )
-      setUser(user)
-      return
+      setUser(user)      
     } catch (error) {
-      alert('wrong credentials')
+      handleNotification('Wrong Credentials', 'error')              
     }
   }
 
@@ -57,23 +59,34 @@ const App = () => {
       setTitle( '' )
       setAuthor( '' )
       setUrl( '' )
-      
+      handleNotification(`New blog: ${blog.title}`, 'success')
       return
-    } catch (error) {
-      alert('fail to create blog')
+    } catch (error) {      
+      handleNotification('Fail to add blog', 'error')
     }
+  }
+
+  const handleNotification = ( message, type ) => {   
+    setMessage( message )
+    setType( type )
+    
+    setTimeout( () => {
+      setMessage( '' )
+      setType( '' )
+      
+    }, 5000)
   }
 
   if ( user == null ) {
     return (
-      <div>
-        <h2>Login to the app</h2>        
+			<div>
+				<h2>Login to the app</h2>
+				<Notification message={message} type={type} />
 				<form onSubmit={handleLogin}>
 					<div>
 						<label htmlFor='username'>Username:</label>
-            <input
+						<input
 							onChange={({ target }) => setUsername(target.value)}
-              
 							type='text'
 							placeholder='Enter username'
 						/>
@@ -81,9 +94,8 @@ const App = () => {
 
 					<div>
 						<label htmlFor='password'>Password:</label>
-            <input
+						<input
 							onChange={({ target }) => setPassword(target.value)}
-              
 							type='password'
 							placeholder='Enter password'
 						/>
@@ -93,11 +105,12 @@ const App = () => {
 					</div>
 				</form>
 			</div>
-    )
+		)
   }
 
   return (
-		<div>
+    <div>
+      <Notification message={message} type={type} />
 			<h2>blogs</h2>
 			<div>
 				{user?.username} logged in{' '}
