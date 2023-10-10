@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
-const app = require('../app')
+const app = require( '../app' )
+const loginUser = require('./userlist_api.test')
+
 
 const api = supertest( app )
 const Blog = require( '../models/blog' )
@@ -35,7 +37,9 @@ beforeEach(async () => {
     await blogObject.save()
     blogObject = new Blog(initialBlogs[2])
 		await blogObject.save()
-})
+} )
+
+
 
 test('blogs are returned as json', async () => {
 	await api
@@ -58,22 +62,30 @@ test('id field is defined', async () => {
 	})
 }, 100000)
 
-test('blog is save with http request', async () => {
+test('adding blog with valid user token to the database works', async () => {
 	const blogsBeforeSaving = await api.get('/api/blogs')
 
-	const newBlog = new Blog({
+	const newBlog = {
 		title: 'Saving new blog during test',
 		author: 'JS Mastery',
 		url: 'jsmastery.com/blog/server-client-rendering',
 		likes: '2',
-	})
+	}
 
-	await newBlog.save()
+	const token = await loginUser()
 
-	const blogsAfterSaving = await api.get('/api/blogs')
-	expect(blogsAfterSaving.body.length).toBeGreaterThan(
-		blogsBeforeSaving.body.length
-	)
+	await api
+		.post('/api/blogs')
+		.send(newBlog)
+		.set({ Authorization: `bearer ${token}` })
+		.expect(201)
+		.expect('Content-Type', /application\/json/)
+
+	const blogsAfterSaving = await api
+		.get('/api/blogs')
+		expect(blogsAfterSaving.body.length)
+		.toBeGreaterThan(blogsBeforeSaving.body.length)
+		
 }, 100000)
 
 test( 'blog without like value is assigned with 0 like ', async () => {
@@ -142,7 +154,19 @@ describe('updating one blog', () => {
 	//   expect(updatedBlog.body.likes).toBeGreaterThan(blogToBeUpdated.likes)
   })
   
+} )
+
+test('Adding a blog fail without token',async() => {
+  const newBlog = {
+		title: 'Blog without a token',
+		author: 'JS Mastery',
+		url: 'jsmastery.com/blog/server-client-rendering',
+		likes: '2',
+  }
+	
+	await api('/api/blogs').send(newBlog).expect(401)
 })
+
 
 
 afterAll(async () => {

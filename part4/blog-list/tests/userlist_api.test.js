@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
-const supertest = require('supertest')
+const supertest = require( 'supertest' )
+const  bcrypt  = require('bcrypt')
 const app = require('../app')
 
 const api = supertest(app)
@@ -21,6 +22,34 @@ describe('user creation', () => {
 		}, 100000)
     
 } )
+
+const loginUser = async () => {
+	await User.deleteMany({})
+
+	const passwordHash = await bcrypt.hash('secret', 10)
+
+	const user = new User({
+		username: 'root',
+		passwordHash,
+	})
+
+	await user.save()
+
+	const userToLogin = {
+		username: 'root',
+		password: 'secret',
+	}
+
+	const response = await api
+		.post('/api/login')
+		.send(userToLogin)
+		.expect(200)
+        .expect( 'Content-Type', /application\/json/ )    
+
+	return response.body.token
+}
+
+module.exports = loginUser
 
 
 afterAll(async () => {
